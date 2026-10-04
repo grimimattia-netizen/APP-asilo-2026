@@ -1,13 +1,6 @@
 <!DOCTYPE html>
 <html lang="it">
-<!-- Collegamento PWA -->
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#d97706">
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js');
-  }
-</script><head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Asilo Nido - Diario Giornaliero</title>
@@ -17,6 +10,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Collegamento PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#d97706">
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js');
+      }
+    </script>
     <style>
         body { font-family: 'Inter', sans-serif; }
         @media print {
@@ -35,7 +36,7 @@
                 </div>
                 <div>
                     <h1 class="text-xl font-bold">Nido Diario Giornaliero</h1>
-                    <p class="text-xs text-amber-100">Gestione Attività Quotidiane</p>
+                    <p class="text-xs text-amber-100">Gestione Attività Quotidiane (Mattina)</p>
                 </div>
             </div>
             
@@ -55,7 +56,7 @@
 
     <main class="max-w-5xl mx-auto px-4 py-6 flex-grow w-full">
         
-        <!-- Role Selection Modal / Screen -->
+        <!-- Role Selection Screen -->
         <div id="roleSelectionScreen" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
             <div class="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl border border-amber-100 text-center">
                 <div class="w-16 h-16 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl shadow-inner">
@@ -101,9 +102,9 @@
                     <i class="fa-solid fa-lock"></i>
                 </div>
                 <h3 class="text-lg font-bold text-slate-800 mb-1">Area Educatore/Educatrice</h3>
-                <p class="text-xs text-slate-500 mb-4">Inserisci il PIN di accesso (PIN predefinito: <code class="bg-amber-50 px-1.5 py-0.5 rounded text-amber-700 font-bold">1234</code>)</p>
+                <p class="text-xs text-slate-500 mb-4">Inserisci il PIN riservato di accesso</p>
                 
-                <input type="password" id="educatorPinInput" maxlength="4" placeholder="••••" class="w-full text-center text-2xl tracking-widest p-3 bg-amber-50/50 border border-amber-200 rounded-xl mb-4 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                <input type="password" id="educatorPinInput" maxlength="6" placeholder="••••" class="w-full text-center text-2xl tracking-widest p-3 bg-amber-50/50 border border-amber-200 rounded-xl mb-4 focus:outline-none focus:ring-2 focus:ring-amber-500">
                 
                 <div class="flex gap-2">
                     <button onclick="closeEducatorPin()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 py-3 rounded-xl font-medium text-sm transition">Annulla</button>
@@ -119,7 +120,7 @@
                     <i class="fa-solid fa-key"></i>
                 </div>
                 <h3 class="text-lg font-bold text-slate-800 mb-1">Codice Identificativo</h3>
-                <p class="text-xs text-slate-500 mb-4">Inserisci il codice fornito dall'educatore/educatrice (es. <code class="bg-emerald-50 px-1.5 py-0.5 rounded text-emerald-700 font-bold">LEO2026</code>)</p>
+                <p class="text-xs text-slate-500 mb-4">Inserisci il codice fornito dall'educatore/educatrice</p>
                 
                 <input type="text" id="parentChildCodeInput" placeholder="es. LEO2026" class="w-full text-center uppercase font-bold tracking-wider p-3 bg-emerald-50/50 border border-emerald-200 rounded-xl mb-4 focus:outline-none focus:ring-2 focus:ring-emerald-500">
                 
@@ -138,7 +139,7 @@
                     <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
                         <i class="fa-solid fa-book-open text-amber-600"></i> Registro Giornaliero Nido
                     </h2>
-                    <p class="text-xs text-slate-500">Compilazione giornaliera delle attività e del benessere</p>
+                    <p class="text-xs text-slate-500">Compilazione attività mattutine</p>
                 </div>
                 <div id="educatorActionButtons" class="flex items-center gap-2 flex-wrap">
                     <button onclick="saveDiary()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl text-sm font-medium transition flex items-center gap-2 shadow">
@@ -177,15 +178,24 @@
                 </div>
                 <div>
                     <label class="block text-sm font-semibold text-slate-700 mb-2"><i class="fa-solid fa-face-smile text-amber-600 mr-1"></i> Umore del Bambino/Bambina</label>
-                    <div class="grid grid-cols-3 gap-2" id="moodSelector">
-                        <button type="button" onclick="setMood('Sereno')" class="mood-btn p-2.5 border-2 border-amber-200 rounded-xl text-center hover:bg-amber-50 transition text-xs font-medium flex flex-col items-center gap-1" data-mood="Sereno">
-                            <span class="text-xl">😊</span> Sereno/a
+                    <div class="grid grid-cols-3 sm:grid-cols-6 gap-2" id="moodSelector">
+                        <button type="button" onclick="setMood('Sereno')" class="mood-btn p-2 border-2 border-amber-200 rounded-xl text-center hover:bg-amber-50 transition text-[11px] font-medium flex flex-col items-center gap-1" data-mood="Sereno">
+                            <span class="text-lg">😊</span> Sereno/a
                         </button>
-                        <button type="button" onclick="setMood('Allegro')" class="mood-btn p-2.5 border-2 border-amber-200 rounded-xl text-center hover:bg-amber-50 transition text-xs font-medium flex flex-col items-center gap-1" data-mood="Allegro">
-                            <span class="text-xl">🥳</span> Allegro/a
+                        <button type="button" onclick="setMood('Allegro')" class="mood-btn p-2 border-2 border-amber-200 rounded-xl text-center hover:bg-amber-50 transition text-[11px] font-medium flex flex-col items-center gap-1" data-mood="Allegro">
+                            <span class="text-lg">🥳</span> Allegro/a
                         </button>
-                        <button type="button" onclick="setMood('Coccole')" class="mood-btn p-2.5 border-2 border-amber-200 rounded-xl text-center hover:bg-amber-50 transition text-xs font-medium flex flex-col items-center gap-1" data-mood="Coccole">
-                            <span class="text-xl">🥺</span> Bisognoso/a di coccole
+                        <button type="button" onclick="setMood('Coccole')" class="mood-btn p-2 border-2 border-amber-200 rounded-xl text-center hover:bg-amber-50 transition text-[11px] font-medium flex flex-col items-center gap-1" data-mood="Coccole">
+                            <span class="text-lg">🧸</span> Coccole
+                        </button>
+                        <button type="button" onclick="setMood('Inquieto')" class="mood-btn p-2 border-2 border-amber-200 rounded-xl text-center hover:bg-amber-50 transition text-[11px] font-medium flex flex-col items-center gap-1" data-mood="Inquieto">
+                            <span class="text-lg">😣</span> Inquieto/a
+                        </button>
+                        <button type="button" onclick="setMood('Triste')" class="mood-btn p-2 border-2 border-amber-200 rounded-xl text-center hover:bg-amber-50 transition text-[11px] font-medium flex flex-col items-center gap-1" data-mood="Triste">
+                            <span class="text-lg">🥺</span> Triste
+                        </button>
+                        <button type="button" onclick="setMood('Rabbia')" class="mood-btn p-2 border-2 border-amber-200 rounded-xl text-center hover:bg-amber-50 transition text-[11px] font-medium flex flex-col items-center gap-1" data-mood="Rabbia">
+                            <span class="text-lg">😡</span> Arrabbiato/a
                         </button>
                     </div>
                 </div>
@@ -195,7 +205,7 @@
                 <!-- Cambio Pannolino -->
                 <div class="bg-amber-50/30 p-5 rounded-2xl border border-amber-200">
                     <h3 class="text-sm font-bold text-slate-800 mb-3 flex items-center justify-between">
-                        <span><i class="fa-solid fa-baby text-amber-600 mr-1.5"></i> Cambio Pannolino e Motivo</span>
+                        <span><i class="fa-solid fa-baby text-amber-600 mr-1.5"></i> Cambio Pannolino e Orario</span>
                         <span id="diaperCountBadge" class="bg-amber-600 text-white text-xs px-2.5 py-0.5 rounded-full font-bold">0 cambi</span>
                     </h3>
                     
@@ -213,73 +223,30 @@
                     </div>
                 </div>
 
-                <!-- Sonno / Riposo -->
+                <!-- Merenda Mattina -->
                 <div class="bg-amber-50/30 p-5 rounded-2xl border border-amber-200 flex flex-col justify-between">
                     <div>
                         <h3 class="text-sm font-bold text-slate-800 mb-3 flex items-center gap-1.5">
-                            <i class="fa-solid fa-bed text-amber-600"></i> Riposo Pomeridiano
+                            <i class="fa-solid fa-apple-whole text-amber-600"></i> Merenda della Mattina
                         </h3>
                         <div class="space-y-3">
                             <div>
-                                <label class="block text-xs font-medium text-slate-600 mb-1">Orario di sonno</label>
-                                <input type="text" id="sleepTime" placeholder="es. 13:00 - 14:45" class="w-full p-2.5 bg-white border border-amber-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                <label class="block text-xs font-medium text-slate-600 mb-1">Quantità consumata</label>
+                                <select id="snackQty" class="w-full p-2.5 bg-white border border-amber-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                    <option value="Tutta">Tutta (100%)</option>
+                                    <option value="Metà">Metà (50%)</option>
+                                    <option value="Poca">Poca</option>
+                                    <option value="Rifiutata">Rifiutata</option>
+                                </select>
                             </div>
                             <div>
-                                <label class="block text-xs font-medium text-slate-600 mb-1">Qualità del sonno</label>
-                                <select id="sleepQuality" class="w-full p-2.5 bg-white border border-amber-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
-                                    <option value="Riposo sereno e profondo">Riposo sereno e profondo</option>
-                                    <option value="Si è svegliato/a più volte">Si è svegliato/a più volte</option>
-                                    <option value="Ha riposato poco">Ha riposato poco</option>
-                                    <option value="Non ha riposato">Non ha riposato</option>
-                                </select>
+                                <label class="block text-xs font-medium text-slate-600 mb-1">Cosa ha mangiato / note</label>
+                                <input type="text" id="snackDesc" placeholder="es. Frutta fresca / Biscotto" class="w-full p-2.5 bg-white border border-amber-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
                             </div>
                         </div>
                     </div>
                     <div class="mt-4 pt-3 border-t border-amber-200/60 text-xs text-amber-800 flex items-center gap-1.5">
-                        <i class="fa-solid fa-circle-info"></i> Il sonno aiuta la rigenerazione e la crescita del bambino/bambina.
-                    </div>
-                </div>
-            </div>
-
-            <div class="mb-6 pb-6 border-b border-amber-100">
-                <h3 class="text-sm font-bold text-slate-800 mb-3 flex items-center gap-1.5">
-                    <i class="fa-solid fa-utensils text-amber-600"></i> Pasti e Merende Consumati
-                </h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <!-- Spuntino / Colazione -->
-                    <div class="bg-amber-50/40 p-4 rounded-2xl border border-amber-200/70">
-                        <label class="block font-bold text-xs text-slate-700 uppercase mb-2">Merenda Mattina</label>
-                        <select id="snackQty" class="w-full p-2.5 bg-white border border-amber-200 rounded-xl text-sm mb-2 focus:ring-2 focus:ring-amber-500">
-                            <option value="Tutta">Tutta (100%)</option>
-                            <option value="Metà">Metà (50%)</option>
-                            <option value="Poca">Poca</option>
-                            <option value="Rifiutata">Rifiutata</option>
-                        </select>
-                        <input type="text" id="snackDesc" placeholder="es. Frutta fresca / Yogurt" class="w-full p-2 bg-white border border-amber-200 rounded-xl text-xs">
-                    </div>
-
-                    <!-- Pranzo -->
-                    <div class="bg-amber-50/40 p-4 rounded-2xl border border-amber-200/70">
-                        <label class="block font-bold text-xs text-slate-700 uppercase mb-2">Pranzo</label>
-                        <select id="lunchQty" class="w-full p-2.5 bg-white border border-amber-200 rounded-xl text-sm mb-2 focus:ring-2 focus:ring-amber-500">
-                            <option value="Tutto">Tutto (Primo e Secondo)</option>
-                            <option value="Metà primo">Solo Primo / Metà</option>
-                            <option value="Poco">Poco</option>
-                            <option value="Rifiutato">Rifiutato</option>
-                        </select>
-                        <input type="text" id="lunchDesc" placeholder="es. Pasta al pomodoro e verdure" class="w-full p-2 bg-white border border-amber-200 rounded-xl text-xs">
-                    </div>
-
-                    <!-- Merenda Pomeridiana -->
-                    <div class="bg-amber-50/40 p-4 rounded-2xl border border-amber-200/70">
-                        <label class="block font-bold text-xs text-slate-700 uppercase mb-2">Merenda Pomeridiana</label>
-                        <select id="merendaQty" class="w-full p-2.5 bg-white border border-amber-200 rounded-xl text-sm mb-2 focus:ring-2 focus:ring-amber-500">
-                            <option value="Tutta">Tutta (100%)</option>
-                            <option value="Metà">Metà (50%)</option>
-                            <option value="Poca">Poca</option>
-                            <option value="Rifiutata">Rifiutata</option>
-                        </select>
-                        <input type="text" id="merendaDesc" placeholder="es. Frullato o biscotti" class="w-full p-2 bg-white border border-amber-200 rounded-xl text-xs">
+                        <i class="fa-solid fa-circle-info"></i> La merenda assicura le giuste energie per le attività del mattino.
                     </div>
                 </div>
             </div>
@@ -302,7 +269,7 @@
                 </div>
             </div>
 
-            <!-- Firma educatore/educatrice finale in basso -->
+            <!-- Firma educatore/educatrice finale -->
             <div class="pt-4 border-t border-amber-100 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500 gap-2">
                 <div class="flex items-center gap-1.5 font-medium">
                     <i class="fa-solid fa-shield-halved text-amber-600"></i> Modulo compilato da: <span id="signatureEducatorDisplay" class="font-bold text-slate-700">Non specificato</span>
@@ -360,6 +327,9 @@
         let currentRole = null; // 'educator' or 'parent'
         let currentMood = 'Sereno';
         let diaperList = []; // Array of diaper objects: { time: '10:30', type: 'Pipì' }
+        
+        // Puoi cambiare '1234' qui sotto con il tuo PIN riservato per gli educatori
+        const EDUCATOR_PIN = 'MGGCUORE2026'; 
 
         window.onload = function() {
             // Set default date to today
@@ -369,15 +339,12 @@
                 dateInput.value = today;
             }
 
-            // Load saved data or initialize defaults
             loadDiaryData();
             
-            // Sync educator name with signature display
             document.getElementById('educatorName').addEventListener('input', function() {
                 document.getElementById('signatureEducatorDisplay').textContent = this.value || 'Non specificato';
             });
             
-            // Sync child code display
             document.getElementById('childCode').addEventListener('input', function() {
                 document.getElementById('childCodeDisplay').textContent = this.value.toUpperCase() || 'LEO2026';
             });
@@ -416,7 +383,7 @@
 
         function verifyEducatorPin() {
             const pin = document.getElementById('educatorPinInput').value;
-            if(pin === '1234') {
+            if(pin === EDUCATOR_PIN) {
                 currentRole = 'educator';
                 closeEducatorPin();
                 document.getElementById('roleSelectionScreen').classList.add('hidden');
@@ -427,7 +394,7 @@
                 enableEditing(true);
                 showToast("Accesso Educatore/Educatrice consentito con successo!");
             } else {
-                showToast("PIN non corretto! (Usa 1234)", true);
+                showToast("PIN non corretto!", true);
             }
         }
 
@@ -459,7 +426,7 @@
                 enableEditing(false);
                 showToast("Benvenuto/a! Accesso effettuato al diario del bambino/bambina.");
             } else {
-                showToast("Codice non valido. Riprova (es. LEO2026)", true);
+                showToast("Codice non valido. Riprova", true);
             }
         }
 
@@ -490,8 +457,10 @@
                 if(educatorControls) educatorControls.classList.remove('hidden');
                 if(educatorActions) educatorActions.classList.remove('hidden');
             } else {
-                if(educatorActions) educatorActions.classList.remove('hidden'); // Consente stampa/PDF anche in sola lettura se desiderato
+                if(educatorControls) educatorControls.classList.add('hidden');
+                if(educatorActions) educatorActions.classList.remove('hidden');
             }
+            renderDiapers();
         }
 
         function setMood(mood) {
@@ -514,6 +483,11 @@
             renderDiapers();
         }
 
+        function updateDiaperTime(index, newTime) {
+            if(currentRole !== 'educator') return;
+            diaperList[index].time = newTime;
+        }
+
         function removeDiaperEntry(index) {
             if(currentRole !== 'educator') return;
             diaperList.splice(index, 1);
@@ -534,15 +508,17 @@
             diaperList.forEach((item, index) => {
                 const isPipi = item.type === 'Pipì';
                 const badgeColor = isPipi ? 'bg-amber-100 text-amber-800 border-amber-300' : 'bg-orange-100 text-orange-800 border-orange-300';
-                
+                const isEducator = currentRole === 'educator';
+
                 html += `
                     <div class="flex items-center justify-between p-2.5 bg-white rounded-xl border border-amber-200 text-xs shadow-sm">
                         <div class="flex items-center gap-2">
-                            <span class="font-mono font-bold text-slate-600"><i class="fa-regular fa-clock mr-1"></i>${item.time}</span>
+                            <i class="fa-regular fa-clock text-slate-400"></i>
+                            <input type="text" value="${item.time}" onchange="updateDiaperTime(${index}, this.value)" ${!isEducator ? 'disabled' : ''} class="w-16 font-mono font-bold text-slate-700 bg-amber-50/50 border border-amber-200 rounded px-1.5 py-0.5 text-center focus:outline-none focus:ring-1 focus:ring-amber-500">
                             <span class="px-2 py-0.5 rounded-full font-bold border ${badgeColor}">${item.type}</span>
                         </div>
                 `;
-                if(currentRole === 'educator') {
+                if(isEducator) {
                     html += `<button onclick="removeDiaperEntry(${index})" class="text-slate-400 hover:text-rose-600 p-1"><i class="fa-solid fa-trash"></i></button>`;
                 }
                 html += `</div>`;
@@ -560,20 +536,14 @@
                 diaryDate: document.getElementById('diaryDate').value,
                 mood: currentMood,
                 diapers: diaperList,
-                sleepTime: document.getElementById('sleepTime').value,
-                sleepQuality: document.getElementById('sleepQuality').value,
                 snackQty: document.getElementById('snackQty').value,
                 snackDesc: document.getElementById('snackDesc').value,
-                lunchQty: document.getElementById('lunchQty').value,
-                lunchDesc: document.getElementById('lunchDesc').value,
-                merendaQty: document.getElementById('merendaQty').value,
-                merendaDesc: document.getElementById('merendaDesc').value,
                 morningActivities: document.getElementById('morningActivities').value,
                 generalNotes: document.getElementById('generalNotes').value
             };
 
             localStorage.setItem('nido_diario_corrente', JSON.stringify(data));
-            showToast("Diario salvato correttamente nel dispositivo!");
+            showToast("Diario salvato correttamente!");
         }
 
         function loadDiaryData() {
@@ -588,14 +558,8 @@
                     if(data.diaryDate) document.getElementById('diaryDate').value = data.diaryDate;
                     if(data.mood) setMood(data.mood);
                     diaperList = data.diapers || [];
-                    document.getElementById('sleepTime').value = data.sleepTime || '';
-                    document.getElementById('sleepQuality').value = data.sleepQuality || 'Riposo sereno e profondo';
                     document.getElementById('snackQty').value = data.snackQty || 'Tutta';
                     document.getElementById('snackDesc').value = data.snackDesc || '';
-                    document.getElementById('lunchQty').value = data.lunchQty || 'Tutto';
-                    document.getElementById('lunchDesc').value = data.lunchDesc || '';
-                    document.getElementById('merendaQty').value = data.merendaQty || 'Tutta';
-                    document.getElementById('merendaDesc').value = data.merendaDesc || '';
                     document.getElementById('morningActivities').value = data.morningActivities || '';
                     document.getElementById('generalNotes').value = data.generalNotes || '';
                     document.getElementById('signatureEducatorDisplay').textContent = data.educatorName || 'Non specificato';
@@ -607,7 +571,7 @@
                 document.getElementById('childCodeDisplay').textContent = 'LEO2026';
                 diaperList = [
                     { time: '10:00', type: 'Pipì' },
-                    { time: '12:30', type: 'Cacca' }
+                    { time: '11:30', type: 'Cacca' }
                 ];
             }
             renderDiapers();
