@@ -1,0 +1,16 @@
+{
+  "short_name": "Nido Diario",
+  "name": "Nido Diario Giornaliero",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/3082/3082060.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "./index.html",
+  "background_color": "#fffbeb",
+  "theme_color": "#d97706",
+  "display": "standalone",
+  "orientation": "portrait"
+}
